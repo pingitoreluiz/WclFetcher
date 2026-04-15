@@ -209,14 +209,24 @@ class App(ctk.CTk):
             amount = top_player.get('amount')
             report_code = top_player.get('report', {}).get('code')
             fight_id = top_player.get('report', {}).get('fightID')
-            actor_id, a_err = self.api_client.fetch_actor_id(report_code, name)
+            duration = top_player.get('duration', 0)
+            start_time = top_player.get('startTime') or top_player.get('report', {}).get('startTime', 0)
+            
+            actor_id, talent_tree, a_err = self.api_client.fetch_talent_data(report_code, fight_id, start_time, duration, name)
             
             if actor_id:
                 url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary&source={actor_id}"
-                talents = self.translations[self.current_lang]["success_msg"]
+                success_msg = self.translations[self.current_lang]["success_msg"]
+                
+                if talent_tree:
+                    ids = [f"{t['nodeID']}:{t['rank']}" for t in talent_tree]
+                    macro = f"/wcltalents " + ",".join(ids)
+                    talents = f"{success_msg}{self.translations[self.current_lang]['v2_macro_info']}\n{macro}"
+                else:
+                    talents = f"{success_msg}\n{self.translations[self.current_lang]['v2_macro_err']}"
             else:
                 url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary"
-                talents = self.translations[self.current_lang]["talents_err"] + f"\n(Erro ao isolar jogador: {a_err})"
+                talents = self.translations[self.current_lang]["talents_err"] + f"\n(Erro: {a_err})"
                 
             formatted_amount = f"{float(amount):,.1f}" if amount else "N/A"
             

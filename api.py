@@ -101,9 +101,9 @@ class APIClient:
         top_player = rankings_list[0]
         return top_player, None
 
-    def fetch_actor_id(self, report_code, player_name):
+    def fetch_talent_data(self, report_code, fight_id, start_time, duration, player_name):
         query = """
-        query($code: String!) {
+        query($code: String!, $fightIDs: [Int]) {
             reportData { 
                 report(code: $code) {
                     masterData {
@@ -112,24 +112,39 @@ class APIClient:
                             name
                         }
                     }
+                    events(dataType: CombatantInfo, fightIDs: $fightIDs) {
+                        data
+                    }
                 }
             }
         }
         """
-        variables = {"code": report_code}
+        
+        variables = {
+            "code": report_code,
+            "fightIDs": [int(fight_id)]
+        }
         
         data = self.query_graphql(query, variables)
         if 'errors' in data:
-            return None, f"Erro na API ao buscar masterData: {data['errors'][0].get('message', '')}"
+            return None, None, f"Erro na API ao buscar dados: {data['errors'][0].get('message', '')}"
             
         report = data.get('data', {}).get('reportData', {}).get('report')
         if not report:
-            return None, "Nenhum relatório encontrado."
+            return None, None, "Nenhum relatório encontrado."
             
         actors = report.get('masterData', {}).get('actors', [])
-        # Find actor id
         actor = next((a for a in actors if a.get('name') == player_name), None)
         if not actor:
-            return None, f"Jogador {player_name} não encontrado nos dados do log."
+            actor_names = [a.get('name') for a in actors]
+            print(f"DEBUG: Player {player_name} not found. Available actors: {actor_names[:10]}...")
+            return None, None, f"Jogador {player_name} não encontrado no log."
             
-        return actor.get('id'), None
+        actor_id = actor.get('id')
+        events = report.get('events', {}).get('data', [])
+        
+        # Find CombatantInfo event for this actor
+        player_event = next((e for e in events if e.get('sourceID') == actor_id), None)
+            
+        talent_tree = player_event.get('talentTree', []) if player_event else []
+        return actor_id, talent_tree, None

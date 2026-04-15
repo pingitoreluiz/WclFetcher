@@ -50,7 +50,9 @@ TRANSLATIONS = {
         "player": "Player: ",
         "throughput": " with a throughput of ",
         "talent_header": "=== HOW TO GET THE TALENTS ===\n",
-        "success_msg": "🔗 Direct Link Generated Successfully!\n\n1. Click the blue 'Access Full Log' button below.\n2. Warcraft Logs will open directly on this player's talents.\n3. Finally, just click the 'Copy Talent String' button on the WCL website!"
+        "success_msg": "🔗 Direct Link Generated Successfully!\n\n1. Click the blue 'Access Full Log' button below.\n2. Warcraft Logs will open directly on this player's talents.\n3. Finally, just click the 'Copy Talent String' button on the WCL website!",
+        "v2_macro_info": "\n\n=== MACRO COMMAND (V2 Experimental) ===\nCopy the command below and paste in WoW chat:",
+        "v2_macro_err": "Failed to extract exact talent IDs from API."
     },
     "pt": {
         "api_setup": "Configuração da API",
@@ -69,6 +71,8 @@ TRANSLATIONS = {
         "player": "Jogador: ",
         "throughput": " com um throughput de ",
         "talent_header": "=== COMO PEGAR OS TALENTOS ===\n",
-        "success_msg": "🔗 Link Direto Gerado com Sucesso!\n\n1. Clique no botão azul 'Acessar Log Completo' abaixo.\n2. O Warcraft Logs vai abrir diretamente nos talentos deste jogador.\n3. Basta clicar no botão 'Copy Talent String' no site da WCL!"
+        "success_msg": "🔗 Link Direto Gerado com Sucesso!\n\n1. Clique no botão azul 'Acessar Log Completo' abaixo.\n2. O Warcraft Logs vai abrir diretamente nos talentos deste jogador.\n3. Basta clicar no botão 'Copy Talent String' no site da WCL!",
+        "v2_macro_info": "\n\n=== COMANDO DE MACRO (V2 Experimental) ===\nCopie o comando abaixo e cole no chat do WoW:",
+        "v2_macro_err": "Falha ao extrair IDs exatos de talentos via API."
     }
 }
