@@ -204,7 +204,7 @@ class App(ctk.CTk):
             
             if actor_id:
                 url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary&source={actor_id}"
-                talents = "🔗 Link Direto Gerado com Sucesso!\n\n1. Clique no botão azul 'Acessar Log Completo' abaixo.\n2. O Warcraft Logs vai abrir diretamente nos talentos deste jogador.\n3. Basta clicar no botão 'Copy Talent String' no site da WCL!"
+                talents = self.translations[self.current_lang]["success_msg"]
             else:
                 url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary"
                 talents = self.translations[self.current_lang]["talents_err"] + f"\n(Erro ao isolar jogador: {a_err})"

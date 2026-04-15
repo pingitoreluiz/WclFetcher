@@ -49,7 +49,8 @@ TRANSLATIONS = {
         "fetch_err": "Unfortunately, talents could not be retrieved:\n{0}",
         "player": "Player: ",
         "throughput": " with a throughput of ",
-        "talent_header": "=== TALENT STRING TO COPY IN-GAME ==="
+        "talent_header": "=== HOW TO GET THE TALENTS ===\n",
+        "success_msg": "🔗 Direct Link Generated Successfully!\n\n1. Click the blue 'Access Full Log' button below.\n2. Warcraft Logs will open directly on this player's talents.\n3. Finally, just click the 'Copy Talent String' button on the WCL website!"
     },
     "pt": {
         "api_setup": "Configuração da API",
@@ -67,6 +68,7 @@ TRANSLATIONS = {
         "fetch_err": "Infelizmente não foi possível obter os talentos:\n{0}",
         "player": "Jogador: ",
         "throughput": " com um throughput de ",
-        "talent_header": "=== STRING DE TALENTOS PARA COPIAR NO JOGO ==="
+        "talent_header": "=== COMO PEGAR OS TALENTOS ===\n",
+        "success_msg": "🔗 Link Direto Gerado com Sucesso!\n\n1. Clique no botão azul 'Acessar Log Completo' abaixo.\n2. O Warcraft Logs vai abrir diretamente nos talentos deste jogador.\n3. Basta clicar no botão 'Copy Talent String' no site da WCL!"
     }
 }
