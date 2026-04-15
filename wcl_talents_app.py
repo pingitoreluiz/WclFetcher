@@ -12,8 +12,8 @@ import sys
 def load_env():
     """Carrega credenciais do arquivo .env se existir."""
     if getattr(sys, 'frozen', False):
-        # Quando compilado com PyInstaller, o .exe fica em sys.executable
-        base_path = os.path.dirname(sys.executable)
+        # Quando compilado com PyInstaller, o .env embutido fica no _MEIPASS
+        base_path = sys._MEIPASS
     else:
         # Quando rodando script .py
         base_path = os.path.dirname(__file__)

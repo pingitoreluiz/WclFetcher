@@ -1,0 +1,7 @@
+## Interface: 110000
+## Title: WCL Talent Fetcher
+## Notes: Imports WCL Top Ranking Talents via macro / chat command.
+## Author: Vibecode
+## Version: 1.0
+
+WclFetcher.lua
