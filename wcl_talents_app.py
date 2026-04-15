@@ -7,9 +7,18 @@ from tkinter import messagebox
 from config import DIFFICULTIES, WOW_CLASSES, CLASS_COLORS, TRANSLATIONS
 from api import APIClient
 
+import sys
+
 def load_env():
     """Carrega credenciais do arquivo .env se existir."""
-    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    if getattr(sys, 'frozen', False):
+        # Quando compilado com PyInstaller, o .exe fica em sys.executable
+        base_path = os.path.dirname(sys.executable)
+    else:
+        # Quando rodando script .py
+        base_path = os.path.dirname(__file__)
+        
+    env_path = os.path.join(base_path, ".env")
     env = {}
     if os.path.exists(env_path):
         with open(env_path) as f:
