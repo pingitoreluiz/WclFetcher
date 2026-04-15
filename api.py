@@ -48,25 +48,21 @@ class APIClient:
         valid_zones = []
         for exp in expansions:
             zones = exp.get('zones', [])
-            # In order to get the highest ID/most recent zones first within the expansion
             zones.sort(key=lambda x: x['id'], reverse=True)
             
             for z in zones:
                 if z.get('encounters'):
                     name = z['name'].lower()
-                    # Ignorar M+, Dungeons, Torghast, Remix, e testes
                     invalid_words = ["mythic+", "dungeon", "remix", "events", "challenge", "brawl", "test", "complete raids", "beta"]
                     if not any(word in name for word in invalid_words):
                         valid_zones.append(z)
                         
-            # Se achou pelo menos as raides da última expansão, já serve!
             if valid_zones:
                 break
                 
         return valid_zones[:5]
 
     def fetch_top_talents(self, encounter_id, class_name, spec_name, difficulty):
-        # API do Warcraft Logs não aceita espaços (ex: Beast Mastery deve ser BeastMastery)
         api_class = class_name.replace(" ", "")
         api_spec = spec_name.replace(" ", "")
         
@@ -100,7 +96,40 @@ class APIClient:
         
         rankings_list = rankings.get('rankings', [])
         if not rankings_list:
-            return None, "A lista de rankings está vazia para esta dificuldade/classe (Ex: você tentou buscar Raide Normal em uma Masmorra Mítica ou uma Raide que ainda não abriu)."
+            return None, "A lista de rankings está vazia para esta dificuldade/classe."
             
         top_player = rankings_list[0]
         return top_player, None
+
+    def fetch_actor_id(self, report_code, player_name):
+        query = """
+        query($code: String!) {
+            reportData { 
+                report(code: $code) {
+                    masterData {
+                        actors(type: "Player") {
+                            id
+                            name
+                        }
+                    }
+                }
+            }
+        }
+        """
+        variables = {"code": report_code}
+        
+        data = self.query_graphql(query, variables)
+        if 'errors' in data:
+            return None, f"Erro na API ao buscar masterData: {data['errors'][0].get('message', '')}"
+            
+        report = data.get('data', {}).get('reportData', {}).get('report')
+        if not report:
+            return None, "Nenhum relatório encontrado."
+            
+        actors = report.get('masterData', {}).get('actors', [])
+        # Find actor id
+        actor = next((a for a in actors if a.get('name') == player_name), None)
+        if not actor:
+            return None, f"Jogador {player_name} não encontrado nos dados do log."
+            
+        return actor.get('id'), None

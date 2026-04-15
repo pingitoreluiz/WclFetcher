@@ -200,13 +200,16 @@ class App(ctk.CTk):
             amount = top_player.get('amount')
             report_code = top_player.get('report', {}).get('code')
             fight_id = top_player.get('report', {}).get('fightID')
+            actor_id, a_err = self.api_client.fetch_actor_id(report_code, name)
             
-            talents = top_player.get('talentLoadout', {}).get('loadoutText', '')
-            if not talents:
-                talents = self.translations[self.current_lang]["talents_err"]
+            if actor_id:
+                url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary&source={actor_id}"
+                talents = "🔗 Link Direto Gerado com Sucesso!\n\n1. Clique no botão azul 'Acessar Log Completo' abaixo.\n2. O Warcraft Logs vai abrir diretamente nos talentos deste jogador.\n3. Basta clicar no botão 'Copy Talent String' no site da WCL!"
+            else:
+                url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary"
+                talents = self.translations[self.current_lang]["talents_err"] + f"\n(Erro ao isolar jogador: {a_err})"
                 
             formatted_amount = f"{float(amount):,.1f}" if amount else "N/A"
-            url = f"https://www.warcraftlogs.com/reports/{report_code}#fight={fight_id}&type=summary"
             
             c_color = self.class_colors.get(cls, "#FFFFFF")
             self.result_textbox.tag_config("color_class", foreground=c_color)
